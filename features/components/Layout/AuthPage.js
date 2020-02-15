@@ -3,20 +3,25 @@ import { View, Text, TouchableWithoutFeedback, Keyboard } from "react-native";
 import EStyleSheet from "react-native-extended-stylesheet";
 
 const AuthPage = ({ children }) => {
-
   return (
     <View style={styles.wrap}>
-      <TouchableWithoutFeedback onPress={() => { Keyboard.dismiss() }}>
-        <View style={[styles.container, styles.centerItems, styles.containerAuth]}>
+      <TouchableWithoutFeedback
+        onPress={() => {
+          Keyboard.dismiss();
+        }}
+      >
+        <View
+          style={[styles.container, styles.centerItems, styles.containerAuth]}
+        >
           {children}
         </View>
       </TouchableWithoutFeedback>
-    </View >
+    </View>
   );
 };
 const styles = EStyleSheet.create({
   wrap: {
-    flex: 1,
+    flex: 1
   },
   centerItems: {
     flexDirection: "column",
@@ -25,30 +30,29 @@ const styles = EStyleSheet.create({
   },
   container: {
     flex: 1,
-    padding: 10,
-
+    padding: 10
   },
   containerAuth: {
-    justifyContent: 'center',
-    backgroundColor: '$primaryColor',
+    justifyContent: "center",
+    backgroundColor: "$primaryColor",
     height: 200
   },
 
   text: {
-    fontSize: '1rem',
+    fontSize: "1rem",
     textAlign: "center"
   },
   authInput: {
-    backgroundColor: '#fff',
-    width: '80 %',
-    height: '5%',
-    textAlign: 'center'
+    backgroundColor: "#fff",
+    width: "80 %",
+    height: "5%",
+    textAlign: "center"
   },
   textPrimary: {
-    fontSize: '2rem'
+    fontSize: "2rem"
   },
   primaryColor: {
-    color: '$primaryColor'
+    color: "$primaryColor"
   }
 });
 
