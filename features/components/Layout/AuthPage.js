@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, TouchableWithoutFeedback, Keyboard } from "react-native";
+import { View, TouchableWithoutFeedback, Keyboard } from "react-native";
 import EStyleSheet from "react-native-extended-stylesheet";
 
 const AuthPage = ({ children }) => {

@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { View, Text, TextInput, TouchableOpacity } from "react-native";
 import EStyleSheet from "react-native-extended-stylesheet";
-import AuthPage from "../Layout/AuthPage";
-import { authentication as authStyles } from "../../styles/default";
+import AuthPage from "../features/components/Layout/AuthPage";
+import { authentication as authStyles } from "../features/styles/default";
 
 const SignIn = ({ navigation }) => {
   const [numberOfPage, setNumberOfPage] = useState(1);
@@ -116,7 +116,7 @@ const styles = EStyleSheet.create({
     alignItems: "stretch",
     height: "10%",
     width: "100%",
-    marginTop: 20
+    marginTop: "$smallMargin"
   },
   paginationButton: {
     width: "40%",

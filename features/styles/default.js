@@ -2,8 +2,8 @@ import EStyleSheet from "react-native-extended-stylesheet";
 export const authentication = EStyleSheet.create({
   textTitle: {
     color: "white",
-    fontSize: 40,
-    marginBottom: "$marginMedium"
+    fontSize: "2rem",
+    marginBottom: "$mediumMargin"
   },
   input: {
     backgroundColor: "#fff",
@@ -13,13 +13,13 @@ export const authentication = EStyleSheet.create({
     borderRadius: 5,
     borderWidth: 1,
     borderColor: "grey",
-    marginTop: 20,
+    marginTop: "$smallMargin",
     fontSize: 25
   },
   button: {
     width: "90%",
     height: "10%",
-    marginTop: 20,
+    marginTop: "$smallMargin",
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: "#D89100",
@@ -30,6 +30,6 @@ export const authentication = EStyleSheet.create({
     fontSize: "1rem"
   },
   marginTop: {
-    marginTop: "$marginMedium"
+    marginTop: "$mediumMargin"
   }
 });
