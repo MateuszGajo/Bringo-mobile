@@ -5,10 +5,7 @@ let { width } = Dimensions.get("window");
 
 export default EStyleSheet.build({
   $primaryColor: "#11999e",
-<<<<<<< HEAD
-=======
   $subColor: "#4a4a4a",
->>>>>>> features/home
   $smallMargin: 15,
   $mediumMargin: 30,
   $largeMargin: 50,
