@@ -1,15 +1,15 @@
 import React from "react";
-import EStyleSheet from "react-native-extended-stylesheet";
-import "react-native-gesture-handler";
-import SignIn from "./screeens/SignIn";
-import SignUp from "./screeens/SignUp";
-import "./features/styles/global";
 
+import { StyleSheet } from "react-native";
+import Home from "./screens/home";
+import Learning from "./screens/learning";
+import Ranking from "./screens/ranking";
+import "./features/styles/global";
 export default function App() {
-  return <SignIn />;
+  return <Home />;
 }
 
-const styles = EStyleSheet.create({
+const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
