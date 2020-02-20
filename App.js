@@ -2,13 +2,8 @@ import React, { useState, useEffect, useReducer } from "react";
 import { Text, View } from "react-native";
 import EStyleSheet from "react-native-extended-stylesheet";
 import "react-native-gesture-handler";
-import { NavigationContainer } from "@react-navigation/native";
-import { createStackNavigator } from "@react-navigation/stack";
 import Spinner from "react-native-loading-spinner-overlay";
 import * as SecureStore from "expo-secure-store";
-import SignIn from "./features/components/Auth/SignIn";
-import SignUp from "./features/components/Auth/SignUp";
-import Home from "./features/components/Home/Home";
 import AuthContext from "./features/context/AuthContext";
 import authReducer from "./features/context/authReducer";
 import LOGIN_QUERY from "./features/queries/loginQuery";
@@ -17,26 +12,28 @@ import { initState } from "./features/context/initState";
 import withApollo from "./features/apollo/withApollo";
 import { registerFormValidation } from "./features/validation/validation";
 import "./features/styles/global";
-
-const Stack = createStackNavigator();
+import NavigatorAuth from "./routes/drawerAuth";
+import NavigatorUnAuth from "./routes/draweUnAuth";
 
 const App = ({ apolloClient }) => {
+  const [isToken, setToken] = useState(false);
   const [isLoading, setStatusOfLoading] = useState(true);
-  const [islogged, setStatusOfLogged] = useState(false);
 
   const [state, dispatch] = useReducer(authReducer, initState);
 
   const signIn = creds => {
+    setStatusOfLoading(true);
     const { email, password } = creds;
     apolloClient
       .query({ query: LOGIN_QUERY, variables: { email, password } })
       .then(({ data }) => {
+        setStatusOfLoading(false);
         const {
           login: { token }
         } = data;
         if (token !== null) {
           SecureStore.setItemAsync("token", token);
-          setStatusOfLogged(true);
+          setToken(true);
         }
       })
       .catch(err => {
@@ -44,6 +41,7 @@ const App = ({ apolloClient }) => {
           type: "LOGIN_CONNECTION_ERROR",
           msg: "Błąd łączenia z baza danych"
         });
+        setStatusOfLoading(false);
       });
   };
 
@@ -67,7 +65,7 @@ const App = ({ apolloClient }) => {
           } = data;
           if (token !== null) {
             SecureStore.setItemAsync("token", token);
-            setStatusOfLogged(true);
+            setToken(true);
           }
         })
         .catch(err => {
@@ -79,9 +77,22 @@ const App = ({ apolloClient }) => {
     }
   };
 
+  const logOut = () => {
+    console.log("we are here");
+    setStatusOfLoading(true);
+    SecureStore.deleteItemAsync("token")
+      .then(resp => {
+        setStatusOfLoading(false);
+        setToken(false);
+      })
+      .catch(err => {
+        setStatusOfLoading(false);
+      });
+  };
+
   useEffect(() => {
     SecureStore.getItemAsync("token").then(resp => {
-      if (resp !== null) setStatusOfLogged(true);
+      if (resp !== null) setToken(true);
       setStatusOfLoading(false);
     });
   }, []);
@@ -91,7 +102,9 @@ const App = ({ apolloClient }) => {
       value={{
         ...state,
         signIn,
-        signUp
+        signUp,
+        setToken,
+        logOut
       }}
     >
       {isLoading ? (
@@ -103,23 +116,10 @@ const App = ({ apolloClient }) => {
             textStyle={styles.spinnerTextStyle}
           />
         </View>
+      ) : isToken ? (
+        <NavigatorAuth />
       ) : (
-        <NavigationContainer>
-          <Stack.Navigator
-            screenOptions={{
-              headerShown: false
-            }}
-          >
-            {islogged ? (
-              <Stack.Screen name="Home" component={Home} />
-            ) : (
-              <>
-                <Stack.Screen name="SignIn" component={SignIn} />
-                <Stack.Screen name="SignUp" component={SignUp} />
-              </>
-            )}
-          </Stack.Navigator>
-        </NavigationContainer>
+        <NavigatorUnAuth />
       )}
     </AuthContext.Provider>
   );
@@ -132,12 +132,13 @@ const styles = EStyleSheet.create({
     alignItems: "center"
   },
   brand: {
-    fontSize: "6rem",
     color: "$primaryColor",
-    marginTop: "30%"
+    fontSize: "4.5rem",
+    marginTop: "$largeMargin"
   },
   spinnerTextStyle: {
-    color: "white"
+    color: "white",
+    fontSize: "1.2rem"
   }
 });
 

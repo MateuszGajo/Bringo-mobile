@@ -1,16 +1,26 @@
-import React from "react";
+import React, { useContext } from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 import Header from "../features/components/Layout/Header";
 import EStyleSheet from "react-native-extended-stylesheet";
 
-const Home = () => {
+const Home = ({ navigation }) => {
   return (
-    <Header>
+    <Header navigation={navigation}>
       <View style={styles.container}>
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => {
+            navigation.navigate("Learning");
+          }}
+        >
           <Text style={styles.textButton}>Rozpocznij sesje</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => {
+            navigation.navigate("Ranking");
+          }}
+        >
           <Text style={styles.textButton}>Ranking</Text>
         </TouchableOpacity>
       </View>

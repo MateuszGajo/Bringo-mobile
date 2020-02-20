@@ -1,9 +1,9 @@
 import React, { useState, useContext } from "react";
 import { View, Text, TextInput, TouchableOpacity } from "react-native";
 import EStyleSheet from "react-native-extended-stylesheet";
-import AuthPage from "../Layout/AuthPage";
-import AuthContext from "../../context/AuthContext";
-import { authentication as authStyles } from "../../styles/default";
+import AuthPage from "../features/components/Layout/AuthPage";
+import AuthContext from "../features/context/AuthContext";
+import { authentication as authStyles } from "../features/styles/default";
 
 const SignIn = ({ navigation }) => {
   const [numberOfPage, setNumberOfPage] = useState(1);
@@ -41,12 +41,14 @@ const SignIn = ({ navigation }) => {
             style={authStyles.input}
             placeholder="Hasło"
             value={password}
+            secureTextEntry
             onChangeText={text => setPassword(text)}
           />
           <TextInput
             style={authStyles.input}
             placeholder="Powtórz hasło"
             value={confirmPassword}
+            secureTextEntry
             onChangeText={text => setConfirmPassword(text)}
           />
           <View style={styles.container}>
@@ -126,7 +128,7 @@ const styles = EStyleSheet.create({
     alignItems: "stretch",
     height: "10%",
     width: "100%",
-    marginTop: 20
+    marginTop: "$smallMargin"
   },
   paginationButton: {
     width: "40%",

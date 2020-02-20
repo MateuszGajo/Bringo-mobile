@@ -1,10 +1,13 @@
-import React from "react";
+import React, { useContext } from "react";
 import { View, Text, ScrollView } from "react-native";
 import EStyleSheet from "react-native-extended-stylesheet";
 import { FontAwesome } from "@expo/vector-icons";
 import Header from "../features/components/Layout/Header";
+import AuthContext from "../features/context/AuthContext";
 
-const Ranking = () => {
+const Ranking = ({ navigation }) => {
+  const { isToken } = useContext(AuthContext);
+  if (!isToken) navigation.navigate("SignIn");
   const tab = [
     { rank: 1, firstname: "sdafsdfdsfsdfsdf", lastName: "das", score: 12 },
     { rank: 2, firstname: "sddasa", lastName: "bvc", score: 9 },
@@ -17,7 +20,7 @@ const Ranking = () => {
     { rank: 9, firstname: "wrwe", lastName: "da31s", score: 2 }
   ];
   return (
-    <Header>
+    <Header navigation={navigation}>
       <View style={[styles.table, styles.marginTop]}>
         <ScrollView>
           {tab.map(user => {

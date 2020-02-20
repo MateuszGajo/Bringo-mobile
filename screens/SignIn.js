@@ -1,8 +1,8 @@
 import React, { useState, useContext } from "react";
 import { Text, TextInput, TouchableOpacity } from "react-native";
-import AuthContext from "../../context/AuthContext";
-import AuthPage from "../Layout/AuthPage";
-import { authentication as authStyles } from "../../styles/default";
+import AuthContext from "../features/context/AuthContext";
+import AuthPage from "../features/components/Layout/AuthPage";
+import { authentication as authStyles } from "../features/styles/default";
 
 const SignIn = ({ navigation }) => {
   const [email, setEmail] = useState("");
@@ -13,6 +13,7 @@ const SignIn = ({ navigation }) => {
   const hadndleSubmit = () => {
     signIn({ email, password });
   };
+  console.log("refresh ?");
   return (
     <AuthPage>
       <Text style={authStyles.textTitle}>Logowanie</Text>
@@ -26,6 +27,7 @@ const SignIn = ({ navigation }) => {
         style={authStyles.input}
         placeholder="Hasło"
         value={password}
+        secureTextEntry
         onChangeText={text => setPassword(text)}
       />
       <TouchableOpacity
@@ -38,7 +40,6 @@ const SignIn = ({ navigation }) => {
         style={[authStyles.textButton, authStyles.marginTop]}
         onPress={() => navigation.navigate("SignUp")}
       >
-        {" "}
         Nie mam jeszcze konta
       </Text>
     </AuthPage>

@@ -1,19 +1,16 @@
-import React from "react";
+import React, { useContext } from "react";
 import EStyleSheet from "react-native-extended-stylesheet";
-import {
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  StyleSheet
-} from "react-native";
+import { View, Text, TextInput, TouchableOpacity } from "react-native";
 import Header from "../features/components/Layout/Header";
 import DownBar from "../features/components/DownBar/DownBar";
+import AuthContext from "../features/context/AuthContext";
 
-const Learning = () => {
+const Learning = ({ navigation }) => {
   const checking = true;
+  const { isToken } = useContext(AuthContext);
+  if (!isToken) navigation.navigate("SignIn");
   return (
-    <Header>
+    <Header navigation={navigation}>
       <View style={style.container}>
         {checking ? (
           <>
