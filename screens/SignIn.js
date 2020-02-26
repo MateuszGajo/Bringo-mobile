@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Text, TextInput, TouchableOpacity } from "react-native";
+import AuthContext from "../features/context/AuthContext";
 import AuthPage from "../features/components/Layout/AuthPage";
 import { authentication as authStyles } from "../features/styles/default";
 
@@ -7,7 +8,11 @@ const SignIn = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const hadndleSubmit = () => {};
+  const { signIn } = useContext(AuthContext);
+
+  const hadndleSubmit = () => {
+    signIn({ email, password });
+  };
   return (
     <AuthPage>
       <Text style={authStyles.textTitle}>Logowanie</Text>

@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { View, Text, TextInput, TouchableOpacity } from "react-native";
 import EStyleSheet from "react-native-extended-stylesheet";
 import AuthPage from "../features/components/Layout/AuthPage";
+import AuthContext from "../features/context/AuthContext";
 import { authentication as authStyles } from "../features/styles/default";
 
 const SignIn = ({ navigation }) => {
@@ -13,7 +14,18 @@ const SignIn = ({ navigation }) => {
   const [lastName, setLastName] = useState("");
   const [phoneNumber, setPhoneNumer] = useState("");
 
-  const hadndleSubmit = () => {};
+  const { signUp } = useContext(AuthContext);
+
+  const hadndleSubmit = () => {
+    signUp({
+      email,
+      password,
+      confirmPassword,
+      firstName,
+      lastName,
+      phoneNumber
+    });
+  };
   return (
     <AuthPage>
       <Text style={authStyles.textTitle}>Rejstracja</Text>
@@ -91,7 +103,7 @@ const SignIn = ({ navigation }) => {
           </View>
           <TouchableOpacity
             style={authStyles.button}
-            onPress={() => setNumberOfPage(2)}
+            onPress={() => hadndleSubmit()}
           >
             <Text style={authStyles.textButton}>Zarejstuj się</Text>
           </TouchableOpacity>
