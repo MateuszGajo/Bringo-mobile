@@ -3,12 +3,10 @@ import { View, Text, TouchableOpacity } from "react-native";
 import { Entypo, FontAwesome, AntDesign } from "@expo/vector-icons";
 import { NavigationActions } from "react-navigation";
 import EStyleSheet from "react-native-extended-stylesheet";
-import * as SecureStore from "expo-secure-store";
 import AuthContext from "../features/context/AuthContext";
 
 const CustomDrawerNavigation = props => {
   const { setToken, logOut } = useContext(AuthContext);
-  console.log(setToken);
 
   const navigateToScreen = route => () => {
     const navigateAction = NavigationActions.navigate({
@@ -38,11 +36,9 @@ const CustomDrawerNavigation = props => {
             <FontAwesome style={styles.navIcon} name="users" />
             <Text style={styles.textNavItem}>Ranking</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.navItem}>
+          <TouchableOpacity style={styles.navItem} onPress={() => logOut()}>
             <AntDesign style={styles.navIcon} name="logout" />
-            <Text style={styles.textNavItem} onPress={() => logOut()}>
-              Wyloguj
-            </Text>
+            <Text style={styles.textNavItem}>Wyloguj</Text>
           </TouchableOpacity>
         </View>
         <View style={styles.user}>

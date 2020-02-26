@@ -1,9 +1,7 @@
 import React, { useState, useEffect, useReducer } from "react";
-import { Text, View } from "react-native";
-import EStyleSheet from "react-native-extended-stylesheet";
 import "react-native-gesture-handler";
-import Spinner from "react-native-loading-spinner-overlay";
 import * as SecureStore from "expo-secure-store";
+import axios from "axios";
 import AuthContext from "./features/context/AuthContext";
 import authReducer from "./features/context/authReducer";
 import LOGIN_QUERY from "./features/queries/loginQuery";
@@ -14,10 +12,15 @@ import { registerFormValidation } from "./features/validation/validation";
 import "./features/styles/global";
 import NavigatorAuth from "./routes/drawerAuth";
 import NavigatorUnAuth from "./routes/draweUnAuth";
+import Loading from "./screens/loading";
+import { SERVER_URL } from "./config";
 
 const App = ({ apolloClient }) => {
   const [isToken, setToken] = useState(false);
   const [isLoading, setStatusOfLoading] = useState(true);
+  const [refreshLearning, setRefreshLearning] = useState(false);
+  const [refreshResume, setRefreshResume] = useState(false);
+  const [refreshRanking, setRefreshRanking] = useState(false);
 
   const [state, dispatch] = useReducer(authReducer, initState);
 
@@ -78,24 +81,44 @@ const App = ({ apolloClient }) => {
   };
 
   const logOut = () => {
-    console.log("we are here");
     setStatusOfLoading(true);
     SecureStore.deleteItemAsync("token")
       .then(resp => {
-        setStatusOfLoading(false);
         setToken(false);
+        setStatusOfLoading(false);
       })
       .catch(err => {
         setStatusOfLoading(false);
       });
   };
 
+  const resetStore = () => {
+    apolloClient.resetStore();
+  };
+
   useEffect(() => {
-    SecureStore.getItemAsync("token").then(resp => {
-      if (resp !== null) setToken(true);
+    SecureStore.getItemAsync("token").then(token => {
+      if (token !== null) {
+        return axios
+          .get(SERVER_URL + "/auth/me", {
+            headers: {
+              Authorization: token || "",
+              "Content-Type": "application/x-www-form-urlencoded"
+            }
+          })
+          .then(resp => {
+            if (resp.data.success) {
+              setToken(true);
+            }
+            setStatusOfLoading(false);
+          })
+          .catch(err => {
+            setStatusOfLoading(false);
+          });
+      }
       setStatusOfLoading(false);
     });
-  }, []);
+  }, [isToken]);
 
   return (
     <AuthContext.Provider
@@ -104,18 +127,18 @@ const App = ({ apolloClient }) => {
         signIn,
         signUp,
         setToken,
-        logOut
+        logOut,
+        resetStore,
+        refreshLearning,
+        refreshResume,
+        refreshRanking,
+        setRefreshLearning,
+        setRefreshResume,
+        setRefreshRanking
       }}
     >
       {isLoading ? (
-        <View style={[styles.container]}>
-          <Text style={styles.brand}>Bringo</Text>
-          <Spinner
-            visible={isLoading}
-            textContent={"Ładowanie"}
-            textStyle={styles.spinnerTextStyle}
-          />
-        </View>
+        <Loading isLoading={isLoading} />
       ) : isToken ? (
         <NavigatorAuth />
       ) : (
@@ -124,22 +147,5 @@ const App = ({ apolloClient }) => {
     </AuthContext.Provider>
   );
 };
-
-const styles = EStyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center"
-  },
-  brand: {
-    color: "$primaryColor",
-    fontSize: "4.5rem",
-    marginTop: "$largeMargin"
-  },
-  spinnerTextStyle: {
-    color: "white",
-    fontSize: "1.2rem"
-  }
-});
 
 export default withApollo(App);

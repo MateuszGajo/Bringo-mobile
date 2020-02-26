@@ -5,6 +5,7 @@ import CustomDrawerNavigation from "./CustomDrawerNavigation";
 import Home from "../screens/home";
 import Learning from "../screens/learning";
 import Ranking from "../screens/ranking";
+import Resume from "../screens/resume";
 
 let { width } = Dimensions.get("window");
 
@@ -26,6 +27,12 @@ const DrawerAuth = createDrawerNavigator(
       screen: Ranking,
       navigationOptions: {
         title: "Ranking"
+      }
+    },
+    Resume: {
+      screen: Resume,
+      navigationOptions: {
+        title: "Resume"
       }
     }
   },

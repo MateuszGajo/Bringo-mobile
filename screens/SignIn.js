@@ -13,7 +13,6 @@ const SignIn = ({ navigation }) => {
   const hadndleSubmit = () => {
     signIn({ email, password });
   };
-  console.log("refresh ?");
   return (
     <AuthPage>
       <Text style={authStyles.textTitle}>Logowanie</Text>
