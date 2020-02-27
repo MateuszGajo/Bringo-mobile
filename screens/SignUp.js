@@ -14,7 +14,8 @@ const SignIn = ({ navigation }) => {
   const [lastName, setLastName] = useState("");
   const [phoneNumber, setPhoneNumer] = useState("");
 
-  const { signUp } = useContext(AuthContext);
+  const { signUp, loginErrors } = useContext(AuthContext);
+  console.log(loginErrors);
 
   const hadndleSubmit = () => {
     signUp({

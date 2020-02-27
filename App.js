@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useReducer } from "react";
 import "react-native-gesture-handler";
 import * as SecureStore from "expo-secure-store";
@@ -150,4 +149,3 @@ const App = ({ apolloClient }) => {
 };
 
 export default withApollo(App);
->>>>>>> features/application-logic
