@@ -14,6 +14,7 @@ import NavigatorAuth from "./routes/drawerAuth";
 import NavigatorUnAuth from "./routes/draweUnAuth";
 import Loading from "./screens/loading";
 import { SERVER_URL } from "./config";
+import { verifyLogging, verifyRegistering } from "./helper";
 
 const App = ({ apolloClient }) => {
   const [isToken, setToken] = useState(false);
@@ -25,26 +26,20 @@ const App = ({ apolloClient }) => {
   const [state, dispatch] = useReducer(authReducer, initState);
 
   const signIn = creds => {
-    setStatusOfLoading(true);
     const { email, password } = creds;
     apolloClient
       .query({ query: LOGIN_QUERY, variables: { email, password } })
       .then(({ data }) => {
-        setStatusOfLoading(false);
         const {
           login: { token }
         } = data;
-        if (token !== null) {
-          SecureStore.setItemAsync("token", token);
-          setToken(true);
-        }
+        verifyLogging(data, dispatch, token, setToken);
       })
       .catch(err => {
         dispatch({
           type: "LOGIN_CONNECTION_ERROR",
           msg: "Błąd łączenia z baza danych"
         });
-        setStatusOfLoading(false);
       });
   };
 
@@ -66,10 +61,7 @@ const App = ({ apolloClient }) => {
           const {
             createUser: { token }
           } = data;
-          if (token !== null) {
-            SecureStore.setItemAsync("token", token);
-            setToken(true);
-          }
+          verifyRegistering(data, dispatch, token, setToken);
         })
         .catch(err => {
           dispatch({
@@ -90,10 +82,6 @@ const App = ({ apolloClient }) => {
       .catch(err => {
         setStatusOfLoading(false);
       });
-  };
-
-  const resetStore = () => {
-    apolloClient.resetStore();
   };
 
   useEffect(() => {
@@ -128,7 +116,6 @@ const App = ({ apolloClient }) => {
         signUp,
         setToken,
         logOut,
-        resetStore,
         refreshLearning,
         refreshResume,
         refreshRanking,

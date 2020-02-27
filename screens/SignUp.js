@@ -14,8 +14,19 @@ const SignIn = ({ navigation }) => {
   const [lastName, setLastName] = useState("");
   const [phoneNumber, setPhoneNumer] = useState("");
 
-  const { signUp, loginErrors } = useContext(AuthContext);
-  console.log(loginErrors);
+  const { signUp, registerErrors } = useContext(AuthContext);
+  const {
+    authError,
+    confirmPasswordError,
+    connectionError,
+    emailError,
+    firstNameError,
+    lastNameError,
+    isFieldsError,
+    passwordError,
+    phoneNumberError
+  } = registerErrors;
+  console.log(registerErrors);
 
   const hadndleSubmit = () => {
     signUp({
@@ -38,6 +49,10 @@ const SignIn = ({ navigation }) => {
             value={email}
             onChangeText={text => setEmail(text)}
           />
+          {emailError ? (
+            <Text style={authStyles.error}>{emailError}</Text>
+          ) : null}
+
           <TextInput
             style={authStyles.input}
             placeholder="Hasło"
@@ -45,6 +60,9 @@ const SignIn = ({ navigation }) => {
             secureTextEntry
             onChangeText={text => setPassword(text)}
           />
+          {passwordError ? (
+            <Text style={authStyles.error}>{passwordError}</Text>
+          ) : null}
           <TextInput
             style={authStyles.input}
             placeholder="Powtórz hasło"
@@ -52,6 +70,9 @@ const SignIn = ({ navigation }) => {
             secureTextEntry
             onChangeText={text => setConfirmPassword(text)}
           />
+          {confirmPasswordError ? (
+            <Text style={authStyles.error}>{confirmPasswordError}</Text>
+          ) : null}
           <View style={styles.container}>
             <View style={[styles.paginationButton, styles.disabledButton]}>
               <Text style={[authStyles.textButton, styles.disabledText]}>
@@ -68,24 +89,38 @@ const SignIn = ({ navigation }) => {
         </>
       ) : (
         <>
+          {isFieldsError ? (
+            <Text style={authStyles.error}>Popraw zaznaczone pola</Text>
+          ) : null}
           <TextInput
             style={authStyles.input}
             placeholder="Imię"
             value={firstName}
             onChangeText={text => setFirstName(text)}
           />
+          {firstNameError ? (
+            <Text style={authStyles.error}>{firstNameError}</Text>
+          ) : null}
           <TextInput
             style={authStyles.input}
             placeholder="Nazwisko"
             value={lastName}
             onChangeText={text => setLastName(text)}
           />
+          {lastNameError ? (
+            <Text style={authStyles.error}>{lastNameError}</Text>
+          ) : null}
           <TextInput
             style={authStyles.input}
             placeholder="Numer Telefonu"
             value={phoneNumber}
             onChangeText={text => setPhoneNumer(text)}
           />
+          {phoneNumberError ? (
+            <Text style={authStyles.error}>{phoneNumberError}</Text>
+          ) : connectionError ? (
+            <Text style={authStyles.error}>{connectionError}</Text>
+          ) : null}
           <View style={styles.container}>
             <TouchableOpacity
               style={styles.paginationButton}

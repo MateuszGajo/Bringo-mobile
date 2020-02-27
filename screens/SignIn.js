@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { Text, TextInput, TouchableOpacity } from "react-native";
 import AuthContext from "../features/context/AuthContext";
 import AuthPage from "../features/components/Layout/AuthPage";
@@ -8,7 +8,8 @@ const SignIn = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const { signIn } = useContext(AuthContext);
+  const { signIn, loginErrors } = useContext(AuthContext);
+  const { emailError, passwordError, connectionError } = loginErrors;
 
   const hadndleSubmit = () => {
     signIn({ email, password });
@@ -22,6 +23,7 @@ const SignIn = ({ navigation }) => {
         value={email}
         onChangeText={text => setEmail(text)}
       />
+      {emailError ? <Text style={authStyles.error}>{emailError}</Text> : null}
       <TextInput
         style={authStyles.input}
         placeholder="Hasło"
@@ -29,6 +31,11 @@ const SignIn = ({ navigation }) => {
         secureTextEntry
         onChangeText={text => setPassword(text)}
       />
+      {passwordError ? (
+        <Text style={authStyles.error}>{passwordError}</Text>
+      ) : connectionError ? (
+        <Text style={authStyles.error}>{connectionError}</Text>
+      ) : null}
       <TouchableOpacity
         style={authStyles.button}
         onPress={() => hadndleSubmit()}

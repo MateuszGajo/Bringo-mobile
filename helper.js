@@ -1,3 +1,41 @@
+import * as SecureStore from "expo-secure-store";
+
+export const verifyLogging = (data, dispatch, token, setToken) => {
+  const { emailError, passwordError, connectionError } = data.login;
+
+  if (emailError)
+    return dispatch({ type: "LOGIN_EMAIL_ERROR", msg: emailError });
+  else if (passwordError)
+    return dispatch({
+      type: "LOGIN_PASSWORD_ERROR",
+      msg: passwordError
+    });
+  else if (connectionError)
+    return dispatch({
+      type: "LOGIN_CONNECTION_ERROR",
+      msg: connectionError
+    });
+
+  dispatch({ type: "LOGIN_SUCCESS" });
+  SecureStore.setItemAsync("token", token);
+  setToken(true);
+};
+
+export const verifyRegistering = (data, dispatch, token, setToken) => {
+  const { userError, connectionError } = data.createUser;
+
+  if (userError) return dispatch({ type: "EMAIL_ERROR", msg: userError });
+  else if (connectionError)
+    return dispatch({
+      type: "REGISTER_CONNECTION_ERROR",
+      msg: connectionError
+    });
+
+  dispatch({ type: "REGISTER_SUCCESS" });
+  SecureStore.setItemAsync("token", token);
+  setToken(true);
+};
+
 export const scoreTable = level => {
   const table = {
     A1: 2,

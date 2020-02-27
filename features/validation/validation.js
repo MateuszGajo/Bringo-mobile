@@ -47,7 +47,7 @@ export const registerFormValidation = ({
   }
 
   if (!numberRegex.test(phoneNumber)) {
-    phoneNumberMessage = "Number musi składać się z 9 cyfr";
+    phoneNumberMessage = "Numer musi składać się z 9 cyfr";
     isValid = false;
   }
 

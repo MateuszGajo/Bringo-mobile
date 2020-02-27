@@ -31,5 +31,13 @@ export const authentication = EStyleSheet.create({
   },
   marginTop: {
     marginTop: "$mediumMargin"
+  },
+  error: {
+    color: "red",
+    marginTop: "$smallMargin",
+    fontSize: "1rem",
+    textShadowColor: "#000",
+    textShadowOffset: { width: 0.75, height: 0.75 },
+    textShadowRadius: 1
   }
 });
