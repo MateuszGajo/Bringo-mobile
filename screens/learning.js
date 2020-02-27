@@ -1,7 +1,14 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useMutation, useLazyQuery } from "@apollo/react-hooks";
 import EStyleSheet from "react-native-extended-stylesheet";
-import { View, Text, TextInput, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+  Keyboard
+} from "react-native";
 import * as SecureStore from "expo-secure-store";
 import jwt_deocde from "jwt-decode";
 import {
@@ -196,55 +203,61 @@ const Learning = ({ navigation }) => {
         <Loading isLoading={isLoading} />
       ) : (
         <Header navigation={navigation}>
-          <View style={styles.container}>
-            {isChecking ? (
-              <>
-                <Text
-                  style={[
-                    styles.textCenter,
-                    isCorrectWord ? styles.correct : styles.wrong
-                  ]}
-                >
-                  {isCorrectWord ? "Poprawna odpowiedź" : "Błędna odpowiedź"}
-                </Text>
-                <Text
-                  style={[
-                    styles.textPrimary,
-                    styles.mediumMarginTop,
-                    styles.textCenter
-                  ]}
-                >
-                  {wordValidation.pl}
-                </Text>
-                <Text style={[styles.textSecondary, styles.textCenter]}>
-                  {wordValidation.en}
-                </Text>
-                <TouchableOpacity
-                  style={[styles.mediumMarginTop, styles.checkButton]}
-                  onPress={() => handleCheckButton()}
-                >
-                  <Text style={styles.textButton}>Dalej</Text>
-                </TouchableOpacity>
-              </>
-            ) : (
-              <>
-                <Text style={[styles.word, styles.textCenter]}>
-                  {selectedWord.pl}
-                </Text>
-                <TextInput
-                  style={[styles.smallMarginTop, styles.inputText]}
-                  placeholder="wpisz słowo"
-                  onChangeText={text => setTypedWord(text)}
-                />
-                <TouchableOpacity
-                  style={[styles.mediumMarginTop, styles.checkButton]}
-                  onPress={() => handleWord()}
-                >
-                  <Text style={styles.textButton}>Sprawdź</Text>
-                </TouchableOpacity>
-              </>
-            )}
-          </View>
+          <TouchableWithoutFeedback
+            onPress={() => {
+              Keyboard.dismiss();
+            }}
+          >
+            <View style={styles.container}>
+              {isChecking ? (
+                <>
+                  <Text
+                    style={[
+                      styles.textCenter,
+                      isCorrectWord ? styles.correct : styles.wrong
+                    ]}
+                  >
+                    {isCorrectWord ? "Poprawna odpowiedź" : "Błędna odpowiedź"}
+                  </Text>
+                  <Text
+                    style={[
+                      styles.textPrimary,
+                      styles.mediumMarginTop,
+                      styles.textCenter
+                    ]}
+                  >
+                    {wordValidation.pl}
+                  </Text>
+                  <Text style={[styles.textSecondary, styles.textCenter]}>
+                    {wordValidation.en}
+                  </Text>
+                  <TouchableOpacity
+                    style={[styles.mediumMarginTop, styles.checkButton]}
+                    onPress={() => handleCheckButton()}
+                  >
+                    <Text style={styles.textButton}>Dalej</Text>
+                  </TouchableOpacity>
+                </>
+              ) : (
+                <>
+                  <Text style={[styles.word, styles.textCenter]}>
+                    {selectedWord.pl}
+                  </Text>
+                  <TextInput
+                    style={[styles.smallMarginTop, styles.inputText]}
+                    placeholder="wpisz słowo"
+                    onChangeText={text => setTypedWord(text)}
+                  />
+                  <TouchableOpacity
+                    style={[styles.mediumMarginTop, styles.checkButton]}
+                    onPress={() => handleWord()}
+                  >
+                    <Text style={styles.textButton}>Sprawdź</Text>
+                  </TouchableOpacity>
+                </>
+              )}
+            </View>
+          </TouchableWithoutFeedback>
           <DownBar score={score} procentCorrectness={procentCorrectness} />
         </Header>
       )}
