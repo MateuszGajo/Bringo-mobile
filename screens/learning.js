@@ -156,7 +156,7 @@ const Learning = ({ navigation }) => {
         getWords({
           variables: {
             level: userInfo.difficulty,
-            number: 1,
+            number: 20,
             userId: userInfo.id
           }
         });
