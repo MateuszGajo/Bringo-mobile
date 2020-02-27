@@ -10,40 +10,13 @@ import Loading from "../screens/loading";
 import AuthContext from "../features/context/AuthContext";
 
 const Home = ({ navigation }) => {
-  const [userInfo, setUserInfo] = useState({ id: "" });
-  const [isSession, setStatusOfSession] = useState(false);
   const [isLoading, setStatusOfLoading] = useState(true);
 
   const { refreshLearning, setRefreshLearning } = useContext(AuthContext);
 
-  const [
-    getSession,
-    { loading: loadingSession, data: sessionData }
-  ] = useLazyQuery(GET_SESSION);
-
   useEffect(() => {
-    SecureStore.getItemAsync("token").then(resp => {
-      const { id } = jwt_deocde(resp);
-      setUserInfo({ id });
-    });
+    setStatusOfLoading(false);
   }, []);
-
-  useEffect(() => {
-    if (userInfo.id !== "") {
-      getSession({ variables: { userId: userInfo.id } });
-    }
-  }, [userInfo.id]);
-
-  useEffect(() => {
-    if (sessionData !== undefined) {
-      const { getSession } = sessionData;
-      const { sessionInfo, words } = getSession;
-      if (sessionInfo !== null && words.length > 0) {
-        setStatusOfSession(true);
-      }
-      setStatusOfLoading(false);
-    }
-  }, [sessionData]);
 
   const handleClickButton = () => {
     navigation.navigate("Learning");
@@ -61,9 +34,7 @@ const Home = ({ navigation }) => {
               style={styles.button}
               onPress={() => handleClickButton()}
             >
-              <Text style={styles.textButton}>
-                {isSession ? "Kontynuuj Sesje" : "Rozpocznij sesje"}
-              </Text>
+              <Text style={styles.textButton}>Sesja</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.button}
